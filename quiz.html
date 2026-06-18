@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz: Hvor synes jeg vi skal hen? · Drengetur 2027</title>
+<meta name="description" content="Svar paa 10 spoergsmaal og faa din personlige top 3 blandt de 11 byer til drengeturen sommer 2027.">
+<link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body style="--accent:#ff7a2f;--accent-soft:rgba(255,122,47,.15)">
+<nav class="nav"><div class="container"><a class="brand" href="index.html">Drenge<b>tur</b> 2027</a><a class="navlink" href="quiz.html">Quiz</a><a class="navlink" href="index.html">Alle steder</a></div></nav>
+
+<header class="dhero"><div class="container">
+  <a class="back" href="index.html">← Alle destinationer</a>
+  <div class="country">Drengetur · Sommer 2027</div>
+  <h1>Hvor synes jeg vi skal hen?</h1>
+  <p class="lead">10 hurtige spørgsmål. Svar ærligt — så regner quizzen din personlige top 3 ud blandt de 11 byer, I har overvejet.</p>
+</div></header>
+
+<main class="container">
+  <div class="quizwrap">
+
+    <div class="qcard" id="screen-intro">
+      <div class="qintro">
+        <p>Hver mand kan tage den hver for sig og sammenligne resultaterne — så finder I hurtigt ud af, hvor gruppen trækker hen.</p>
+        <button class="qstart" id="btn-start">Start quizzen →</button>
+        <div class="qpills">
+          <span class="qpill">🇪🇸 Marbella</span><span class="qpill">🇪🇸 Ibiza</span><span class="qpill">🇭🇷 Hvar</span><span class="qpill">🇬🇷 Mykonos</span><span class="qpill">🇪🇸 Palma</span><span class="qpill">🇲🇹 Malta</span><span class="qpill">🇵🇹 Lagos</span><span class="qpill">🇪🇸 Tarifa</span><span class="qpill">🇭🇷 Makarska</span><span class="qpill">🇬🇷 Paros</span><span class="qpill">🇬🇷 Milos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="qcard" id="screen-quiz" style="display:none">
+      <div class="qprogress-wrap">
+        <span class="qcounter" id="q-counter">Spm. 1/10</span>
+        <div class="qbar"><div id="q-progress"></div></div>
+      </div>
+      <h2 class="qq" id="q-text"></h2>
+      <div class="qopts" id="q-options"></div>
+      <button class="qback" id="btn-back">← Tilbage</button>
+    </div>
+
+    <div class="qcard" id="screen-result" style="display:none">
+      <div class="qresult-head">
+        <h2>Pak kufferten 🧳</h2>
+        <p>Din top 3 ud fra dine svar</p>
+      </div>
+      <div class="qpodium" id="result-list"></div>
+      <div class="qrest" id="result-rest"></div>
+      <div class="qactions">
+        <button class="qbtn2" id="btn-restart">↺ Tag den igen</button>
+        <a class="qbtn2" href="index.html">Se alle 11 byer</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer"><div class="container">Drengetur · Sommer 2027 · quiz</div></footer>
+
+<script>
+(function(){
+  var DEST = {
+    marbella:{name:"Marbella",flag:"🇪🇸",file:"marbella.html",c:"#c9a227",price:"Højt",tags:["Fest","Luksus","Strand"],pitch:"Costa del Sols klassiker — beach clubs, champagne og high-end natteliv."},
+    ibiza:{name:"Ibiza",flag:"🇪🇸",file:"ibiza.html",c:"#e0407f",price:"Meget højt",tags:["Fest","Luksus","Strand"],pitch:"Verdens hovedstad for elektronisk musik og clubbing."},
+    hvar:{name:"Hvar",flag:"🇭🇷",file:"hvar.html",c:"#1d9e75",price:"Medium-højt",tags:["Fest","Luksus","Strand"],pitch:"Kroatiens Saint-Tropez — yacht-vibe, solnedgangsfester og topklasse mad."},
+    mykonos:{name:"Mykonos",flag:"🇬🇷",file:"mykonos.html",c:"#2f7fd6",price:"Meget højt",tags:["Fest","Luksus","Strand"],pitch:"Det græske svar på Marbella — luksusfest fra kl. 16 til morgen."},
+    palma:{name:"Palma de Mallorca",flag:"🇪🇸",file:"palma.html",c:"#e2574c",price:"Medium",tags:["Fest","Strand"],pitch:"Det voksne Mallorca — storby, lækre beach clubs og tapas i Santa Catalina."},
+    malta:{name:"Malta",flag:"🇲🇹",file:"malta.html",c:"#e0762b",price:"Medium-lavt",tags:["Fest","Strand","Budget"],pitch:"Bådfester til Blue Lagoon og kaotisk natteliv i Paceville — value for money."},
+    lagos:{name:"Lagos",flag:"🇵🇹",file:"lagos.html",c:"#e08a1a",price:"Medium-lavt",tags:["Strand","Budget","Chill"],pitch:"Algarves surf-perle — beach bars, klippehuler og billig portugisisk øl."},
+    tarifa:{name:"Tarifa",flag:"🇪🇸",file:"tarifa.html",c:"#18a5af",price:"Medium",tags:["Strand","Budget","Chill"],pitch:"Kitesurf-hovedstaden — rå strande, chiringuitos og nul snobberi."},
+    makarska:{name:"Makarska",flag:"🇭🇷",file:"makarska.html",c:"#34a06a",price:"Medium-lavt",tags:["Strand","Budget","Chill"],pitch:"Bjerge møder Adriaterhav — Buba Beach Bar og en natklub i en grotte."},
+    paros:{name:"Paros",flag:"🇬🇷",file:"paros.html",c:"#5b7cf0",price:"Medium",tags:["Fest","Strand","Budget"],pitch:"Mykonos-vibe til halv pris — Pounda Beach om dagen, cocktails ved kajen."},
+    milos:{name:"Milos",flag:"🇬🇷",file:"milos.html",c:"#9b87ef",price:"Medium",tags:["Strand","Chill"],pitch:"Europas vildeste strande — månelandskab, klippe-hop og ro."}
+  };
+
+  var QUESTIONS = [
+    {q:"Hvad må turen koste pr. mand — fly + ophold?", o:[
+      {t:"Vi holder budget — value for money", p:{malta:3,makarska:3,lagos:3,tarifa:2,paros:2}},
+      {t:"Medium — gerne mest muligt for pengene", p:{palma:2,paros:2,tarifa:2,milos:2,malta:1,lagos:1}},
+      {t:"Vi betaler gerne for kvalitet", p:{marbella:3,hvar:2,palma:1,milos:1}},
+      {t:"Pengene er ligegyldige — giv os det vildeste", p:{ibiza:3,mykonos:3,marbella:1,hvar:1}}
+    ]},
+    {q:"Hvor meget skal turen handle om FEST?", o:[
+      {t:"Fest er hele pointen — non-stop", p:{ibiza:3,mykonos:3,marbella:2,malta:2,paros:1}},
+      {t:"Masser af fest, men også afslapning", p:{marbella:2,hvar:2,palma:2,paros:2,malta:1}},
+      {t:"Lidt fest, mest strand og hygge", p:{lagos:2,tarifa:2,makarska:2,palma:1,paros:1}},
+      {t:"Vi vil mest bare slappe af og være væk", p:{milos:3,makarska:2,lagos:2,tarifa:1}}
+    ]},
+    {q:"Hvornår er gruppen i bedst humør?", o:[
+      {t:"Til frokost — dagsfest fra kl. 16", p:{mykonos:3,hvar:2,marbella:2,palma:1,paros:1}},
+      {t:"Dag OG nat — vi kører hele døgnet", p:{marbella:2,palma:2,malta:2,paros:2,hvar:1}},
+      {t:"Natten er vores — club til solopgang", p:{ibiza:3,malta:2,mykonos:1}},
+      {t:"Vi er morgenfriske — strand og natur om dagen", p:{milos:3,lagos:2,tarifa:2,makarska:2}}
+    ]},
+    {q:"Drømme-nattelivet er…", o:[
+      {t:"Verdens største DJ's og elektronisk musik", p:{ibiza:3,mykonos:1}},
+      {t:"Beach club med champagne og bottle service", p:{marbella:3,mykonos:2,hvar:2,ibiza:1}},
+      {t:"En natklub i en grotte — kaotisk og sjovt", p:{malta:3,makarska:2,paros:1}},
+      {t:"Cocktails ved kajen / chiringuito i solnedgang", p:{tarifa:2,lagos:2,paros:2,palma:1,milos:1}}
+    ]},
+    {q:"Strandtypen I drømmer om?", o:[
+      {t:"Beach club med DJ, daybeds og pool", p:{marbella:2,ibiza:2,mykonos:2,palma:2}},
+      {t:"Rå strande til surf og kitesurf", p:{tarifa:3,lagos:2}},
+      {t:"Skjulte vige, klippe-hop og månelandskab", p:{milos:3,lagos:1,makarska:1}},
+      {t:"Bådfest ud til en lagune", p:{malta:3,hvar:2,paros:1}}
+    ]},
+    {q:"Hvor meget snobberi / dress code kan I leve med?", o:[
+      {t:"Giv os luksus — yachts, champagne, fine klubber", p:{mykonos:2,hvar:2,marbella:2,ibiza:1}},
+      {t:"Lidt lækkert er fint, men ikke stift", p:{palma:2,marbella:1,paros:1,hvar:1}},
+      {t:"Nul snobberi — slippers og bare tæer", p:{tarifa:3,lagos:2,makarska:2,milos:1}},
+      {t:"Value for money slår alt", p:{malta:3,makarska:1,lagos:1,paros:1}}
+    ]},
+    {q:"Aktivitet I helst laver om dagen?", o:[
+      {t:"Leje en båd/yacht og sejle ud", p:{hvar:3,malta:2,paros:1,milos:1}},
+      {t:"Surf, kitesurf og action", p:{tarifa:3,lagos:2}},
+      {t:"Klippe-hop, vandring og natur", p:{milos:3,makarska:2,lagos:1}},
+      {t:"Pool, beach club og bottle service", p:{marbella:2,ibiza:2,mykonos:2,palma:2}}
+    ]},
+    {q:"Hvad betyder mad og hygge for jer?", o:[
+      {t:"Topklasse gastronomi", p:{hvar:3,mykonos:1,marbella:1}},
+      {t:"Tapas, lokale retter og god stemning", p:{palma:3,marbella:1,milos:1}},
+      {t:"Billig øl og streetfood — vi sparer til fest", p:{malta:2,lagos:2,makarska:2,paros:2}},
+      {t:"Chiringuitos på stranden, intet fancy", p:{tarifa:3,lagos:1,milos:1}}
+    ]},
+    {q:"Hvor kendt skal stedet være?", o:[
+      {t:"Et verdensnavn — alle kender det", p:{ibiza:3,mykonos:2,marbella:2}},
+      {t:"Hot og kendt, men ikke det mest oplagte", p:{hvar:2,palma:2,paros:1}},
+      {t:"En hidden gem ingen i gruppen har set", p:{milos:3,makarska:2,tarifa:2,lagos:1}},
+      {t:"En value-perle der giver mest for pengene", p:{malta:2,paros:2,makarska:1,lagos:1}}
+    ]},
+    {q:"Det ultimative 'must' på turen?", o:[
+      {t:"En legendarisk solnedgangsfest", p:{hvar:3,mykonos:2,ibiza:1,paros:1}},
+      {t:"En vild klubnat vi knap kan huske", p:{ibiza:2,malta:2,marbella:1,mykonos:1}},
+      {t:"En perfekt strand-/bådedag i paradis", p:{milos:3,malta:2,paros:1,makarska:1}},
+      {t:"Mest mulig fest for pengene", p:{malta:2,paros:2,palma:1,lagos:1}}
+    ]}
+  ];
+
+  var state={i:0,answers:[]};
+  var $=function(id){return document.getElementById(id);};
+  var LETTERS=["A","B","C","D"];
+
+  function show(s){
+    $("screen-intro").style.display=s==="intro"?"block":"none";
+    $("screen-quiz").style.display=s==="quiz"?"block":"none";
+    $("screen-result").style.display=s==="result"?"block":"none";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function renderQuestion(){
+    var Q=QUESTIONS[state.i];
+    $("q-counter").textContent="Spm. "+(state.i+1)+"/"+QUESTIONS.length;
+    $("q-progress").style.width=((state.i+1)/QUESTIONS.length*100)+"%";
+    $("q-text").textContent=Q.q;
+    $("btn-back").style.visibility=state.i===0?"hidden":"visible";
+    var wrap=$("q-options");wrap.innerHTML="";
+    Q.o.forEach(function(opt,idx){
+      var b=document.createElement("button");
+      b.className="qopt";
+      b.innerHTML='<span class="qletter">'+LETTERS[idx]+'</span><span>'+opt.t+'</span>';
+      b.onclick=function(){
+        state.answers[state.i]=idx;
+        if(state.i<QUESTIONS.length-1){state.i++;renderQuestion();}
+        else{renderResult();}
+      };
+      wrap.appendChild(b);
+    });
+  }
+
+  function tagsHTML(d){
+    var t=d.tags.map(function(x){return '<span class="qtag">'+x+'</span>';}).join("");
+    return t+'<span class="qprice">'+d.price+' pris</span>';
+  }
+
+  function renderResult(){
+    var scores={};Object.keys(DEST).forEach(function(k){scores[k]=0;});
+    state.answers.forEach(function(ai,qi){
+      var p=QUESTIONS[qi].o[ai].p;
+      Object.keys(p).forEach(function(k){scores[k]+=p[k];});
+    });
+    var ranked=Object.keys(scores).sort(function(a,b){return scores[b]-scores[a];});
+    var max=scores[ranked[0]]||1;
+    var top3=ranked.slice(0,3);
+    var medals=["🥇","🥈","🥉"];
+    var list=$("result-list");list.innerHTML="";
+    top3.forEach(function(k,idx){
+      var d=DEST[k];var pct=Math.round(scores[k]/max*100);
+      var row=document.createElement("div");
+      row.className="qrow"+(idx===0?" win":"");
+      row.style.setProperty("--c",d.c);
+      row.innerHTML=
+        '<div class="qrtop"><span class="qmedal">'+medals[idx]+'</span>'+
+        '<span class="qrname">'+d.flag+' '+d.name+'</span>'+
+        '<span class="qscore">'+scores[k]+' point</span></div>'+
+        '<div class="qtags">'+tagsHTML(d)+'</div>'+
+        '<div class="qmeter"><div style="width:'+pct+'%"></div></div>'+
+        '<p class="qpitch">'+d.pitch+'</p>'+
+        '<a class="qgo" href="'+d.file+'">Se '+d.name+' →</a>';
+      list.appendChild(row);
+    });
+    var rest=ranked.slice(3).filter(function(k){return scores[k]>0;});
+    var rw=$("result-rest");
+    if(rest.length){
+      rw.innerHTML='<h3>Resten af feltet</h3>'+rest.map(function(k,i){
+        var d=DEST[k];
+        return '<div class="qrestrow"><span class="n">'+(i+4)+'.</span><a href="'+d.file+'" style="color:inherit;font-weight:700">'+d.flag+' '+d.name+'</a><span class="s">'+scores[k]+' p.</span></div>';
+      }).join("");
+    } else {rw.innerHTML="";}
+    show("result");
+  }
+
+  $("btn-start").onclick=function(){state.i=0;state.answers=[];renderQuestion();show("quiz");};
+  $("btn-back").onclick=function(){if(state.i>0){state.i--;renderQuestion();}};
+  $("btn-restart").onclick=function(){state.i=0;state.answers=[];show("intro");};
+})();
+</script>
+</body>
+</html>
